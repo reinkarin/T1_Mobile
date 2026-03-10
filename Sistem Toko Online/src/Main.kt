@@ -170,7 +170,7 @@ fun main() {
                         // Membuat ID unik manual tanpa UUID
                         val idOrder = "ORD-${Random.nextInt(1000, 9999)}"
                         toko.orders.add(Order(idOrder, user, finalItems.toList(), OrderStatus.Pending, PaymentMethod.Cash, total))
-                        cart.items.removeAll(finalItems); println("🚀 Berhasil! ID: $idOrder")
+                        cart.items.removeAll(finalItems); println("Berhasil! ID: $idOrder")
                     } else if (confirm == "n") {
                         println("!Pembayaran dibatalkan!")
                     } else {
