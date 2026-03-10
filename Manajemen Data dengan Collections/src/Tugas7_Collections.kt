@@ -4,6 +4,7 @@ data class NilaiMahasiswa(
     val mataKuliah: String,
     val nilai: Int
 )
+
 fun getGrade(nilaiInt: Int): String {
     return when (nilaiInt) {
         in 85..100 -> "A"
@@ -16,6 +17,7 @@ fun getGrade(nilaiInt: Int): String {
 }
 
 fun main() {
+
     val listMahasiswa = listOf(
         NilaiMahasiswa("F1D0231001", "Kim Yeonchae", "Pemrograman", 76),
         NilaiMahasiswa("F1D0231002", "Lee Mark", "Pemrograman", 85),
@@ -31,6 +33,7 @@ fun main() {
 
     println("===== DATA NILAI MAHASISWA =====")
     println("\nNo  NIM           Nama             MataKuliah      Nilai")
+
     listMahasiswa.forEachIndexed { index, mhs ->
         println("${(index + 1).toString().padEnd(3)} ${mhs.nim.padEnd(13)} " +
                 "${mhs.nama.padEnd(16)} ${mhs.mataKuliah.padEnd(15)} ${mhs.nilai}")
@@ -51,11 +54,46 @@ fun main() {
     lulus.forEachIndexed { i, mhs ->
         println("${i + 1}. ${mhs.nama} - ${mhs.nilai} (${getGrade(mhs.nilai)})")
     }
+
     val groupGrade = listMahasiswa.groupBy { getGrade(it.nilai) }
 
     println("\n===== JUMLAH PER GRADE =====")
     listOf("A", "B", "C", "D", "E").forEach { g ->
         val jumlah = groupGrade[g]?.size ?: 0
         println("Grade $g: $jumlah mahasiswa")
+    }
+
+    // MEMBUAT RANKING BERDASARKAN NILAI TERTINGGI
+    val ranking = listMahasiswa.sortedByDescending { it.nilai }
+
+    println("\n===== SISTEM PENCARIAN MAHASISWA =====")
+    println("Ketik nama mahasiswa untuk mencari data")
+    println("Ketik 'selesai' untuk keluar\n")
+
+    while (true) {
+
+        print("Masukkan nama: ")
+        val input = readLine()
+
+        if (input.equals("selesai", ignoreCase = true)) {
+            println("Program selesai.")
+            break
+        }
+
+        val hasil = ranking.find { it.nama.equals(input, ignoreCase = true) }
+
+        if (hasil != null) {
+
+            val peringkat = ranking.indexOf(hasil) + 1
+
+            println("\nHasil Pencarian")
+            println("Nama      : ${hasil.nama}")
+            println("Peringkat : $peringkat")
+            println("Nilai     : ${hasil.nilai}")
+            println("Grade     : ${getGrade(hasil.nilai)}\n")
+
+        } else {
+            println("Mahasiswa tidak ditemukan\n")
+        }
     }
 }
